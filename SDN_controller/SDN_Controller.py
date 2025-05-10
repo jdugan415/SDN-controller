@@ -71,7 +71,41 @@ class SDNController:
         nx.draw_networkx_edge_labels(self.graph, pos, edge_labels=edge_labels)
         plt.title("SDN Network Topology and Link Utilization")
         plt.show()
+if __name__ == '__main__':
+    controller = SDNController()
 
+    # Sample Topology
+    for n in ['A', 'B', 'C', 'D', 'E']:
+        controller.add_node(n)
+    controller.add_link('A', 'B')
+    controller.add_link('A', 'C')
+    controller.add_link('B', 'D')
+    controller.add_link('C', 'D')
+    controller.add_link('D', 'E')
+
+    # CLI loop
+    while True:
+        cmd = input("SDN> ").strip().split()
+        if not cmd:
+            continue
+        action = cmd[0].lower()
+        if action == 'add_node':
+            controller.add_node(cmd[1])
+        elif action == 'add_link':
+            controller.add_link(cmd[1], cmd[2])
+        elif action == 'remove_link':
+            controller.remove_link(cmd[1], cmd[2])
+        elif action == 'inject':
+            flow_id = cmd[1]
+            controller.inject_traffic(cmd[2], cmd[3], flow_id)
+        elif action == 'query':
+            controller.query_routing(cmd[1])
+        elif action == 'show':
+            controller.visualize()
+        elif action == 'exit':
+            break
+        else:
+            print("Unknown command. Commands: add_node, add_link, remove_link, inject, query, show, exit")
     
 
 
